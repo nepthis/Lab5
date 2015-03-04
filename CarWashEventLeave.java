@@ -3,10 +3,13 @@ package lab5;
 public class CarWashEventLeave extends Event {
 	
 	private int id;
+	private double prio;
 	
 	public CarWashEventLeave(double p, int id) {
-		super(p);
+		prio=p;
 		this.id = id;
+		super(p);
+		
 	}
 	
 	/**
@@ -23,10 +26,42 @@ public class CarWashEventLeave extends Event {
 	 * 
 	 * Sedan avslutas funktionen.
 	 */
-	public void execute(Simulator sim, SimState ss) {
+	public void execute(Simulator sim, CarWashState ss) {
+		ss.time= prio- ss.time;
+		ss.idleTime= prio= ss.idleTime; //förstod inte riktigt formulering om vad som skulle göras här
 		
-	}
-	
+		
+		if (ss.fastWash.contains(id)){
+			ss.fastWash.remove(id);
+			if (!ss.carQueue.isEmpty()){
+				if (ss.fastWash.size()<ss.fastWashMax){
+					ss.fastWash.add(ss.carQueue.get(0));
+					ss.carQueue.remove(0);
+				}else if(ss.slowWash.size()<ss.slowWashMax){
+					ss.slowWash.add(ss.carQueue.get(0));
+					ss.carQueue.remove(0);
+				}
+				CarWashEventLeave(ss.carQueue.get(0)); //eller nåt
+			}
+			
+		}
+		else if (ss.slowWash.contains(id)){
+			ss.slowWash.remove(id);
+			if (!ss.carQueue.isEmpty()){
+				if (ss.fastWash.size()<ss.fastWashMax){
+					ss.fastWash.add(ss.carQueue.get(0));
+					ss.carQueue.remove(0);
+				}else if(ss.slowWash.size()<ss.slowWashMax){
+					ss.slowWash.add(ss.carQueue.get(0));
+					ss.carQueue.remove(0);
+				}
+				CarWashEventLeave(ss.carQueue.get(0));
+			}
+		}
+				
+	}		
+		
+
 	public String toString() {
 		return "";
 	}
