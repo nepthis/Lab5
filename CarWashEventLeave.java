@@ -3,12 +3,10 @@ package lab5;
 public class CarWashEventLeave extends Event {
 	
 	private int id;
-	private double prio;
 	
 	public CarWashEventLeave(double p, int id) {
-		prio=p;
-		this.id = id;
 		super(p);
+		this.id = id;
 		
 	}
 	
@@ -26,38 +24,40 @@ public class CarWashEventLeave extends Event {
 	 * 
 	 * Sedan avslutas funktionen.
 	 */
-	public void execute(Simulator sim, CarWashState ss) {
-		ss.time= prio- ss.time;
-		ss.idleTime= prio= ss.idleTime; //förstod inte riktigt formulering om vad som skulle göras här
+	public void execute(Simulator sim, SimState ss) {
+		CarWashState ss2 = (CarWashState) ss;
+		ss2.time+= getPriority()- ss2.time;
+		ss2.idleTime= (ss2.fastWashMax-ss2.fastWash.size())+(ss2.slowWashMax-ss2.slowWash.size())*(getPriority()-ss2.time); 
 		
 		
-		if (ss.fastWash.contains(id)){
-			ss.fastWash.remove(id);
-			if (!ss.carQueue.isEmpty()){
-				if (ss.fastWash.size()<ss.fastWashMax){
-					ss.fastWash.add(ss.carQueue.get(0));
-					ss.carQueue.remove(0);
-				}else if(ss.slowWash.size()<ss.slowWashMax){
-					ss.slowWash.add(ss.carQueue.get(0));
-					ss.carQueue.remove(0);
+		if (ss2.fastWash.contains(id)){
+			ss2.fastWash.remove(id);
+			if (!ss2.carQueue.isEmpty()){
+				if (ss2.fastWash.size()<ss2.fastWashMax){
+					ss2.fastWash.add(ss2.carQueue.get(0));
+					ss2.carQueue.remove(0);
+				}else if(ss2.slowWash.size()<ss2.slowWashMax){
+					ss2.slowWash.add(ss2.carQueue.get(0));
+					ss2.carQueue.remove(0);
 				}
-				CarWashEventLeave(ss.carQueue.get(0)); //eller nåt
+				sim.addEvent(new CarWashEventLeave(ss2.fastWashRand.next(), id));
 			}
 			
 		}
-		else if (ss.slowWash.contains(id)){
-			ss.slowWash.remove(id);
-			if (!ss.carQueue.isEmpty()){
-				if (ss.fastWash.size()<ss.fastWashMax){
-					ss.fastWash.add(ss.carQueue.get(0));
-					ss.carQueue.remove(0);
-				}else if(ss.slowWash.size()<ss.slowWashMax){
-					ss.slowWash.add(ss.carQueue.get(0));
-					ss.carQueue.remove(0);
+		else if (ss2.slowWash.contains(id)){
+			ss2.slowWash.remove(id);
+			if (!ss2.carQueue.isEmpty()){
+				if (ss2.fastWash.size()<ss2.fastWashMax){
+					ss2.fastWash.add(ss2.carQueue.get(0));
+					ss2.carQueue.remove(0);
+				}else if(ss2.slowWash.size()<ss2.slowWashMax){
+					ss2.slowWash.add(ss2.carQueue.get(0));
+					ss2.carQueue.remove(0);
 				}
-				CarWashEventLeave(ss.carQueue.get(0));
+				sim.addEvent(new CarWashEventLeave(ss2.fastWashRand.next(), id));
 			}
 		}
+		
 				
 	}		
 		
@@ -65,4 +65,6 @@ public class CarWashEventLeave extends Event {
 	public String toString() {
 		return "";
 	}
+
+
 }
