@@ -18,7 +18,7 @@ public class CarWashEventStop extends Event {
 		System.out.println("-----------------------------------------");
 		System.out.println("Total idle machine time: " + ss2.idleTime);
 		System.out.println("Total queueing time: " + ss2.time);
-		System.out.println("Mean queueing time: " + ((någon total kötid)/(antalet bilar)));
+		System.out.println("Mean queueing time: " + ((ss2.time)/((ss2.counter)-(ss2.rejectedCars)));
 		System.out.println("Rejected cars: " + ss2.rejectedCars);
 		
 	}
