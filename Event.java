@@ -2,7 +2,7 @@ package lab5;
 
 public abstract class Event {
 
-	private double priority;
+	protected double priority;
 	
 	public Event() {
 		priority = 0d;
