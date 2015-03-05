@@ -1,9 +1,9 @@
 package lab5;
 
 public class CarWashEventArrive extends Event {
-	int ss.cFactory.getnext() = id;
 	public CarWashEventArrive(double p) {
 		super(p);
+		
 	}
 	
 	/**
@@ -22,33 +22,34 @@ public class CarWashEventArrive extends Event {
 	 * Sist skall ett nytt arrive genereras med prioriteten som fås av ss.arrivalRand() och funktionen avslutas.
 	 */
 	public void execute(Simulator sim, SimState ss) {
-		CarWashState.counter++;
-		ss.time = ss.time + this.priority;
-		ss.idleTime += (ss.fastWashMax - ss.fastWash.size()) * this.priority + (ss.slowWashMax - ss.slowWash.size()) * this.priority;
+		CarWashState cws = (CarWashState) ss;
+		cws.counter++;
+		cws.time = cws.time + this.priority;
+		cws.idleTime += (cws.fastWashMax - cws.fastWash.size()) * this.priority + (cws.slowWashMax - cws.slowWash.size()) * this.priority);
 		
-		if(ss.fastWash.size() <= ss.fastWashMax){
-			ss.fastWash.add(id);
-			sim.addEvent(new CarWashEventLeave(ss.fastWashRand.next() + ss.time, id);
+		if(cws.fastWash.size() <= cws.fastWashMax){
+			cws.fastWash.add(id);
+			sim.addEvent(new CarWashEventLeave(cws.fastWashRand.next() + cws.time, id);
 			//CarWashEventLeave leave = new CarWashEventLeave(ss.fastWashRand.next() + ss.time, id);
 			setChanged();
 			notifyObservers;
 		}
-		else if(ss.slowWash.size() <= ss.slowWashMax){
-			ss.slowWash.add(id);
-			sim.addEvent(new CarWashEventLeave(ss.slowWashRand.next() + ss.time, id);
+		else if(cws.slowWash.size() <= cws.slowWashMax){
+			cws.slowWash.add(id);
+			sim.addEvent(new CarWashEventLeave(cws.slowWashRand.next() + cws.time, id);
 			//CarWashEventLeave leave = new CarWashEventLeave(ss.slowWashRand.next() + ss.time, id);
 			setChanged();
 			notifyObservers;
 		}
-		else if(ss.carQueue.size() <= ss.carQueueMax){
-			ss.carQueue.add(id);
+		else if(cws.carQueue.size() <= cws.carQueueMax){
+			cws.carQueue.add(id);
 			setChanged();
-			notifyObservers;
+			notifyObservers();
 		}
 		else(){
-			ss.rejectedCars++;
+			cws.rejectedCars++;
 			setChanged();
-			notifyObservers;
+			notifyObservers();
 		}
 
 	}
