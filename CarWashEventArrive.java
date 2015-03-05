@@ -1,9 +1,8 @@
 package lab5;
 
 public class CarWashEventArrive extends Event {
-	private int id;
-	public CarWashEventArrive(double p, int id) {
-		id = this.id;
+	int ss.cFactory.getnext() = id;
+	public CarWashEventArrive(double p) {
 		super(p);
 	}
 	
@@ -23,18 +22,21 @@ public class CarWashEventArrive extends Event {
 	 * Sist skall ett nytt arrive genereras med prioriteten som fås av ss.arrivalRand() och funktionen avslutas.
 	 */
 	public void execute(Simulator sim, SimState ss) {
-		ss.time = ss.time + prio;
-		ss.idleTime += (ss.fastWashMax - ss.fastWash.size()) * prio + (ss.slowWashMax - ss.slowWash.size()) * prio;
+		CarWashState.counter++;
+		ss.time = ss.time + priority;
+		ss.idleTime += (ss.fastWashMax - ss.fastWash.size()) * priority + (ss.slowWashMax - ss.slowWash.size()) * priority;
 		
 		if(ss.fastWash.size() <= ss.fastWashMax){
 			ss.fastWash.add(id);
-			CarWashEventLeave leave = new CarWashEventLeave(ss.fastWashRand.next());
+			sim.addEvent(new CarWashEventLeave(ss.fastWashRand.next() + ss.time, id);
+			//CarWashEventLeave leave = new CarWashEventLeave(ss.fastWashRand.next() + ss.time, id);
 			setChanged();
 			notifyObservers;
 		}
 		else if(ss.slowWash.size() <= ss.slowWashMax){
 			ss.slowWash.add(id);
-			CarWashEventLeave leave = new CarWashEventLeave(ss.slowWashRand.next());
+			sim.addEvent(new CarWashEventLeave(ss.slowWashRand.next() + ss.time, id);
+			//CarWashEventLeave leave = new CarWashEventLeave(ss.slowWashRand.next() + ss.time, id);
 			setChanged();
 			notifyObservers;
 		}
@@ -48,7 +50,6 @@ public class CarWashEventArrive extends Event {
 			setChanged();
 			notifyObservers;
 		}
-		CarWashArrive(ss.arrivalRand());
 
 	}
 	
