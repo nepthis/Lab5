@@ -46,7 +46,7 @@ public class CarWashEventArrive extends Event {
 			notifyObservers;
 		}
 		else(){
-			this.rejectedCars++;
+			ss.rejectedCars++;
 			setChanged();
 			notifyObservers;
 		}
