@@ -27,6 +27,7 @@ public class CarWashEventArrive extends Event {
 		cws.counter++;
 		cws.time += this.priority-cws.time;
 		cws.idleTime += ((cws.fastWashMax - cws.fastWash.size()) + (cws.slowWashMax - cws.slowWash.size())) * this.priority;
+		cws.queueTime += (cws.carQueue.size()) * (this.priority-cws.time);
 		
 		if(cws.fastWash.size() <= cws.fastWashMax){
 			cws.fastWash.add(id);
