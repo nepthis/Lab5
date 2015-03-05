@@ -23,6 +23,7 @@ public class CarWashEventArrive extends Event {
 	 */
 	public void execute(Simulator sim, SimState ss) {
 		CarWashState cws = (CarWashState) ss;
+		int id = cws.cFactory.nextId();
 		cws.counter++;
 		cws.time = cws.time + this.priority;
 		cws.idleTime += (cws.fastWashMax - cws.fastWash.size()) * this.priority + (cws.slowWashMax - cws.slowWash.size()) * this.priority);
@@ -32,14 +33,14 @@ public class CarWashEventArrive extends Event {
 			sim.addEvent(new CarWashEventLeave(cws.fastWashRand.next() + cws.time, id);
 			//CarWashEventLeave leave = new CarWashEventLeave(ss.fastWashRand.next() + ss.time, id);
 			setChanged();
-			notifyObservers;
+			notifyObservers();
 		}
 		else if(cws.slowWash.size() <= cws.slowWashMax){
 			cws.slowWash.add(id);
 			sim.addEvent(new CarWashEventLeave(cws.slowWashRand.next() + cws.time, id);
 			//CarWashEventLeave leave = new CarWashEventLeave(ss.slowWashRand.next() + ss.time, id);
 			setChanged();
-			notifyObservers;
+			notifyObservers();
 		}
 		else if(cws.carQueue.size() <= cws.carQueueMax){
 			cws.carQueue.add(id);
