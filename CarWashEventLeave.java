@@ -26,21 +26,24 @@ public class CarWashEventLeave extends Event {
 	 */
 	public void execute(Simulator sim, SimState ss) {
 		CarWashState ss2 = (CarWashState) ss;
-		ss2.time+= getPriority()- ss2.time;
-		ss2.idleTime= (ss2.fastWashMax-ss2.fastWash.size())+(ss2.slowWashMax-ss2.slowWash.size())*(getPriority()-ss2.time); 
+		ss2.time+= this.priority - ss2.time;
+		ss2.idleTime+= (ss2.fastWashMax-ss2.fastWash.size())+(ss2.slowWashMax-ss2.slowWash.size())*(this.priority-ss2.time); 
 		
 		
 		if (ss2.fastWash.contains(id)){
 			ss2.fastWash.remove(id);
 			if (!ss2.carQueue.isEmpty()){
 				if (ss2.fastWash.size()<ss2.fastWashMax){
-					ss2.fastWash.add(ss2.carQueue.get(0));
+					int bilId=ss2.carQueue.get(0);
+					ss2.fastWash.add(bilId);
 					ss2.carQueue.remove(0);
+					sim.addEvent(new CarWashEventLeave(ss2.time+ss2.fastWashRand.next(),bilId ));
 				}else if(ss2.slowWash.size()<ss2.slowWashMax){
-					ss2.slowWash.add(ss2.carQueue.get(0));
+					int bilId=ss2.carQueue.get(0);
+					ss2.slowWash.add(bilId);
 					ss2.carQueue.remove(0);
+					sim.addEvent(new CarWashEventLeave(ss2.time+ss2.fastWashRand.next(),bilId ));
 				}
-				sim.addEvent(new CarWashEventLeave(ss2.fastWashRand.next(), id));
 			}
 			
 		}
@@ -48,13 +51,16 @@ public class CarWashEventLeave extends Event {
 			ss2.slowWash.remove(id);
 			if (!ss2.carQueue.isEmpty()){
 				if (ss2.fastWash.size()<ss2.fastWashMax){
-					ss2.fastWash.add(ss2.carQueue.get(0));
+					int bilId = ss2.carQueue.get(0);
+					ss2.fastWash.add(bilId);
 					ss2.carQueue.remove(0);
+					sim.addEvent(new CarWashEventLeave(ss2.time +ss2.fastWashRand.next(), bilId));
 				}else if(ss2.slowWash.size()<ss2.slowWashMax){
-					ss2.slowWash.add(ss2.carQueue.get(0));
+					int bilId = ss2.carQueue.get(0);
+					ss2.slowWash.add(bilId);
 					ss2.carQueue.remove(0);
+					sim.addEvent(new CarWashEventLeave(ss2.time +ss2.fastWashRand.next(), bilId));
 				}
-				sim.addEvent(new CarWashEventLeave(ss2.fastWashRand.next(), id));
 			}
 		}
 		
