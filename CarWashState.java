@@ -17,6 +17,7 @@ public class CarWashState extends SimState {
 	int counter = 0; // total antal bilar som anlänt (inkluderar rejectedCars) 
 	double time = 0d;
 	double idleTime = 0d;
+	double queueTime = 0d;
 	
 	CarFactory cFactory = new CarFactory();
 	
