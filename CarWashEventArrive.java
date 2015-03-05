@@ -1,10 +1,8 @@
 package lab5;
 
 public class CarWashEventArrive extends Event {
-	private int prio;
 	private int id;
 	public CarWashEventArrive(double p, int id) {
-		prio = this.p;
 		id = this.id;
 		super(p);
 	}
