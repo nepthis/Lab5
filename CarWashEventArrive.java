@@ -30,21 +30,21 @@ public class CarWashEventArrive extends Event {
 		cws.idleTime += ((cws.fastWashMax - cws.fastWash.size()) + (cws.slowWashMax - cws.slowWash.size())) * deltaTime;
 		cws.queueTime += (cws.carQueue.size()) * deltaTime;
 		
-		if(cws.fastWash.size() <= cws.fastWashMax){
+		if(cws.fastWash.size() < cws.fastWashMax){
 			cws.fastWash.add(id);
 			sim.addEvent(new CarWashEventLeave(cws.fastWashRand.next() + cws.time, id);
 			//CarWashEventLeave leave = new CarWashEventLeave(ss.fastWashRand.next() + ss.time, id);
 			setChanged();
 			notifyObservers();
 		}
-		else if(cws.slowWash.size() <= cws.slowWashMax){
+		else if(cws.slowWash.size() < cws.slowWashMax){
 			cws.slowWash.add(id);
 			sim.addEvent(new CarWashEventLeave(cws.slowWashRand.next() + cws.time, id);
 			//CarWashEventLeave leave = new CarWashEventLeave(ss.slowWashRand.next() + ss.time, id);
 			setChanged();
 			notifyObservers();
 		}
-		else if(cws.carQueue.size() <= cws.carQueueMax){
+		else if(cws.carQueue.size() < cws.carQueueMax){
 			cws.carQueue.add(id);
 			setChanged();
 			notifyObservers();
