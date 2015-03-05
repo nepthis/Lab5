@@ -12,10 +12,6 @@ public abstract class Event {
 		priority = p;
 	}
 	
-	public double getPriority() {
-		return priority;
-	}
-	
 	public abstract void execute(Simulator sim, SimState ss);
 	
 	public abstract String toString();
