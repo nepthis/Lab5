@@ -3,29 +3,98 @@ package lab5.carwash;
 import java.util.ArrayList;
 import java.util.Random;
 
+import lab5.simulator.Event;
 import lab5.simulator.SimState;
 
 
 public class CarWashState extends SimState {
 	
-	ArrayList<Integer> fastWash = new ArrayList<Integer>();
-	int fastWashMax;
-	ArrayList<Integer> slowWash = new ArrayList<Integer>();
-	int slowWashMax;
-	ArrayList<Integer> carQueue = new ArrayList<Integer>();
-	int carQueueMax;
+	private ArrayList<Integer> fastWash = new ArrayList<Integer>();
+	private int fastWashMax;
+	private ArrayList<Integer> slowWash = new ArrayList<Integer>();
+	private int slowWashMax;
+	private ArrayList<Integer> carQueue = new ArrayList<Integer>();
+	private int carQueueMax;
 	
-	int rejectedCars = 0;
-	int counter = 0; // total antal bilar som anlänt (inkluderar rejectedCars) 
-	double time = 0d;
-	double idleTime = 0d;
-	double queueTime = 0d;
+	public ArrayList<Integer> getFastWashQueue() {
+		return fastWash;
+	}
 	
-	CarFactory cFactory = new CarFactory();
+	public int getFastWashMax() {
+		return fastWashMax;
+	}
 	
-	ExponentialRandomStream arrivalRand;
-	UniformRandomStream fastWashRand;
-	UniformRandomStream slowWashRand;
+	public ArrayList<Integer> getSlowWashQueue() {
+		return slowWash;
+	}
+	
+	public int getSlowWashMax() {
+		return slowWashMax;
+	}
+	
+	public ArrayList<Integer> getCarQueue() {
+		return carQueue;
+	}
+	
+	public int getCarQueueMax() {
+		return carQueueMax;
+	}
+	
+	private int rejectedCars = 0;
+	private int counter = 0; // total antal bilar som anlänt (inkluderar rejectedCars) 
+	private double time = 0d;
+	private double idleTime = 0d;
+	private double queueTime = 0d;
+	
+	public int getRejectedCars() {
+		return rejectedCars;
+	}
+	
+	public void increaseRejectedCars() {
+		rejectedCars++;
+	}
+	
+	public int getTotalCars() {
+		return counter;
+	}
+	
+	public void increaseTotalCars() {
+		counter++;
+	}
+	
+	public double getTime() {
+		return time;
+	}
+	
+	public double getIdleTime() {
+		return idleTime;
+	}
+	
+	public double getQueueTime() {
+		return queueTime;
+	}
+	
+	private CarFactory cFactory = new CarFactory();
+	
+	public int getNextCarId() {
+		return cFactory.nextId();
+	}
+	
+	private ExponentialRandomStream arrivalRand;
+	private UniformRandomStream fastWashRand;
+	private UniformRandomStream slowWashRand;
+	
+	public double getNextArrival() {
+		return arrivalRand.next();
+	}
+	
+	public double getFastWashTime() {
+		return fastWashRand.next();
+	}
+	
+	public double getSlowWashTime() {
+		return slowWashRand.next();
+	}
 	
 	double fastDist1, fastDist2, slowDist1, slowDist2, lambda;
 	long seed;
@@ -53,8 +122,9 @@ public class CarWashState extends SimState {
 		slowWashRand = new UniformRandomStream(slowDist1, slowDist2, seed);
 	}
 	
-	public void setStateChange() {
+	public void setStateChange(Event e) {
 		this.setChanged();
+		this.notifyObservers(e);
 	}
 	
 	public void updateTime(double deltaTime) {
@@ -106,5 +176,3 @@ class UniformRandomStream {
 	    return lower+rand.nextDouble()*width;
 	}
 }
-
-
