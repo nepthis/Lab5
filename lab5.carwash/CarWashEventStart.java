@@ -17,7 +17,9 @@ public class CarWashEventStart extends CarWashEvent {
 	/**
 	 * 
 	 * The execute method is generating the first arrive event
-	 * 
+	 *@param sim Simulator shell.
+	 *@param ss CarWashState.
+	 * @return void
 	 */
 	public void execute(Simulator sim, SimState ss) {
 		CarWashState ss2 = (CarWashState) ss;
