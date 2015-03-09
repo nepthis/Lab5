@@ -11,30 +11,11 @@ public class CarWashEventArrive extends CarWashEvent {
 		super(p, id);
 		
 	}
-	
-	/**
-	 * Timevariabeln i statevariabeln ökas med detta eventets tid minus timevariabeln.
-	 * 
-	 * Finns det några lediga biltvättar måste även tidigare nämnd deltatid gångras med antal lediga tvättar,
-	 * och plussas på i idleTime i statevariabeln.
-	 * 
-	 * Sedan läggs en bil till i den snabba eller långsamma biltvätten.
-	 * Den snabba prioriteras över den långsamma. Finns ingen ledig plats läggs den till i kön.
-	 * Lades en bil till i en tvätt, måste ett leave-event genereras med prioriteten som fås av
-	 * ss.slowWashRand.next() om den ligger i en långsam biltvätt eller ss.fastWashRand.next() om
-	 * den ligger i en snabb biltvätt.
-	 * Är kön i sin tur full ska rejectedCars i statevariabeln ökas.
-	 * 
-	 * Sist skall ett nytt arrive genereras med prioriteten som fås av ss.arrivalRand() och funktionen avslutas.
-	 */
 	 /**
-	  * 
 	  * Ökar både tidsvariabeln och idletidsvariabeln. Kollar om det finns någon tvätt ledig, prioriterar snabba
 	  * tvätten över den långsamma. Finns det ledig tvätt tvättas bilen, annars läggs den i kön. Är kön full
 	  * blir bilen rejected och rejectedCarsvariabeln ökas. 
 	  * Till slut generaras ett nytt Arrive-event med nästa prioritet.
-	  * 
-	  * 
 	  * @param Simulator sim Simulator shell.
 	  * @Simstate CarWashState.
 	  * @return void
