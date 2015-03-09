@@ -21,10 +21,13 @@ public class CarWashEventStop extends Event {
 		System.out.println("Mean queueing time: " + ((ss2.time)/((ss2.counter)-(ss2.rejectedCars)));
 		System.out.println("Rejected cars: " + ss2.rejectedCars);
 		
+		ss2.setChanged();
+		ss2.notifyObservers();
+		
 	}
 	
 	public String toString() {
-		return "";
+		return "Stop";
 	}
 }
 
