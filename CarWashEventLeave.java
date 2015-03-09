@@ -28,7 +28,8 @@ public class CarWashEventLeave extends Event {
 		CarWashState ss2 = (CarWashState) ss;
 		ss2.time+= this.priority - ss2.time;
 		ss2.idleTime+= (ss2.fastWashMax-ss2.fastWash.size())+(ss2.slowWashMax-ss2.slowWash.size())*(this.priority-ss2.time); 
-		
+		ss2.setChanged();
+		ss2.notifyObservers();
 		
 		if (ss2.fastWash.contains(id)){
 			ss2.fastWash.remove(id);
@@ -69,7 +70,7 @@ public class CarWashEventLeave extends Event {
 		
 
 	public String toString() {
-		return "";
+		return "Leave";
 	}
 
 
