@@ -16,11 +16,10 @@ public class CarWashEventStop extends CarWashEvent {
 	public void execute(Simulator sim, SimState ss) {
 		CarWashState ss2 = (CarWashState) ss;
 		
-		double deltaTime = this.priority - ss2.time;
+		double deltaTime = this.priority - ss2.getTime();
 		ss2.updateTime(deltaTime);
 		
-		ss2.setStateChange();
-		ss2.notifyObservers(this);
+		ss2.setStateChange(this);
 		
 		ss2.setStopped();
 	}
