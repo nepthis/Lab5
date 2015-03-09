@@ -12,7 +12,7 @@ public class SortedSequence {
 	public void addEvent(Event e) {
 		for(int i = 0; i < ss.size(); i++) {
 			if(ss.get(i).getPriority() > e.getPriority()) {
-				ss.add(i-1, e);
+				ss.add(i, e);
 				return; 
 			}
 		}
