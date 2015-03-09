@@ -49,6 +49,6 @@ public class CarWashEventArrive extends Event {
 	}
 	
 	public String toString() {
-		return "";
+		return "Arrive";
 	}
 }
