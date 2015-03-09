@@ -27,6 +27,18 @@ public class CarWashEventArrive extends CarWashEvent {
 	 * 
 	 * Sist skall ett nytt arrive genereras med prioriteten som fås av ss.arrivalRand() och funktionen avslutas.
 	 */
+	 /**
+	  * 
+	  * Ökar både tidsvariabeln och idletidsvariabeln. Kollar om det finns någon tvätt ledig, prioriterar snabba
+	  * tvätten över den långsamma. Finns det ledig tvätt tvättas bilen, annars läggs den i kön. Är kön full
+	  * blir bilen rejected och rejectedCarsvariabeln ökas. 
+	  * Till slut generaras ett nytt Arrive-event med nästa prioritet.
+	  * 
+	  * 
+	  * @param Simulator sim Simulator shell.
+	  * @Simstate CarWashState.
+	  * @return void
+	  */
 	public void execute(Simulator sim, SimState ss) {
 		CarWashState cws = (CarWashState) ss;
 		cws.increaseTotalCars();
@@ -61,7 +73,10 @@ public class CarWashEventArrive extends CarWashEvent {
 
 
 	}
-	
+	/**
+	 * 
+	 * @return Returns the name of the event as a string. 
+	 */
 	public String toString() {
 		return "Arrive";
 	}
