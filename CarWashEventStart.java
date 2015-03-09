@@ -25,6 +25,9 @@ public class CarWashEventStart extends Event {
 		
 		System.out.println("Fast machines: " + ss2.carQueueMax);
 		
+		ss2.setChanged();
+		ss2.notifyObservers();
+		
 		
 	}
 	
