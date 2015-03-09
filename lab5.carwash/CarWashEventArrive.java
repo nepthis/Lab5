@@ -1,5 +1,7 @@
 package lab5.carwash;
 
+import java.util.ArrayList;
+
 import lab5.simulator.SimState;
 import lab5.simulator.Simulator;
 
@@ -27,32 +29,35 @@ public class CarWashEventArrive extends CarWashEvent {
 	 */
 	public void execute(Simulator sim, SimState ss) {
 		CarWashState cws = (CarWashState) ss;
-		cws.counter++;
-		double deltaTime = this.priority-cws.time;
+		cws.increaseTotalCars();
+		double deltaTime = this.priority-cws.getTime();
 		/*cws.time += deltaTime;
 		cws.idleTime += ((cws.fastWashMax - cws.fastWash.size()) + (cws.slowWashMax - cws.slowWash.size())) * deltaTime;
 		cws.queueTime += (cws.carQueue.size()) * deltaTime;*/
 		cws.updateTime(deltaTime);
 		
-		cws.setStateChange();
-		cws.notifyObservers(this);
+		cws.setStateChange(this);
 		
-		if(cws.fastWash.size() < cws.fastWashMax){
-			cws.fastWash.add(id);
-			sim.addEvent(new CarWashEventLeave(cws.fastWashRand.next() + cws.time, id));
+		ArrayList<Integer> fastWash = cws.getFastWashQueue();
+		ArrayList<Integer> slowWash = cws.getSlowWashQueue();
+		ArrayList<Integer> carQueue = cws.getCarQueue();
+		
+		if(fastWash.size() < cws.getFastWashMax()){
+			fastWash.add(id);
+			sim.addEvent(new CarWashEventLeave(cws.getFastWashTime() + cws.getTime(), id));
 		}
-		else if(cws.slowWash.size() < cws.slowWashMax){
-			cws.slowWash.add(id);
-			sim.addEvent(new CarWashEventLeave(cws.slowWashRand.next() + cws.time, id));
+		else if(slowWash.size() < cws.getSlowWashMax()){
+			slowWash.add(id);
+			sim.addEvent(new CarWashEventLeave(cws.getSlowWashTime() + cws.getTime(), id));
 		}
-		else if(cws.carQueue.size() < cws.carQueueMax){
-			cws.carQueue.add(id);
+		else if(carQueue.size() < cws.getCarQueueMax()){
+			carQueue.add(id);
 		}
 		else {
-			cws.rejectedCars++;
+			cws.increaseRejectedCars();
 		}
 		
-		sim.addEvent(new CarWashEventArrive(cws.arrivalRand.next() + cws.time, cws.cFactory.nextId()));
+		sim.addEvent(new CarWashEventArrive(cws.getNextArrival() + cws.getTime(), cws.getNextCarId()));
 
 
 	}
