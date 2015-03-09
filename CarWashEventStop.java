@@ -11,19 +11,18 @@ public class CarWashEventStop extends Event {
 	 * Sedan printar den ut slut info (se lab 5 PDF:en).
 	 */
 	public void execute(Simulator sim, SimState ss) {
-		ss.stop = true;
-		
 		CarWashState ss2 = (CarWashState) ss;
+		
+		ss2.setChanged();
+		ss2.notifyObservers();
+		
+		ss2.stop = true;
 		
 		System.out.println("-----------------------------------------");
 		System.out.println("Total idle machine time: " + ss2.idleTime);
 		System.out.println("Total queueing time: " + ss2.time);
 		System.out.println("Mean queueing time: " + ((ss2.time)/((ss2.counter)-(ss2.rejectedCars)));
 		System.out.println("Rejected cars: " + ss2.rejectedCars);
-		
-		ss2.setChanged();
-		ss2.notifyObservers();
-		
 	}
 	
 	public String toString() {
