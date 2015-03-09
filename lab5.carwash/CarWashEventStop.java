@@ -3,15 +3,19 @@ package lab5.carwash;
 import lab5.simulator.SimState;
 import lab5.simulator.Simulator;
 
+	/**
+	 *The class CarWashEventStop makes the simulation stop at the next loop 
+	 * 
+	 */
 public class CarWashEventStop extends CarWashEvent {
 	public CarWashEventStop(double p) {
 		super(p, -1);
 	}
-	
-	/**
-	 * Stop-eventet sätter statets stopvariabel till sann så exekveringen av
-	 * simuleringen slutar vid nästaa koll efter event.
-	 * Sedan printar den ut slut info (se lab 5 PDF:en).
+
+	 
+	 /**
+	 * The method execute calculate the delta time and update the time
+	 * 
 	 */
 	public void execute(Simulator sim, SimState ss) {
 		CarWashState ss2 = (CarWashState) ss;
@@ -23,6 +27,10 @@ public class CarWashEventStop extends CarWashEvent {
 		
 		ss2.setStopped();
 	}
+	/**
+	 *
+	 * 
+	 */
 	
 	public String toString() {
 		return "Stop";
