@@ -16,9 +16,8 @@ public class CarWashEventStart extends CarWashEvent {
 	public void execute(Simulator sim, SimState ss) {
 		CarWashState ss2 = (CarWashState) ss;
 
-		ss2.setStateChange();
-		ss2.notifyObservers(this);
-		sim.addEvent(new CarWashEventArrive(ss2.arrivalRand.next(), ss2.cFactory.nextId()));
+		ss2.setStateChange(this);
+		sim.addEvent(new CarWashEventArrive(ss2.getNextArrival(), ss2.getNextCarId()));
 		
 	}
 	
