@@ -15,7 +15,9 @@ public class CarWashEventStop extends CarWashEvent {
 	 
 	 /**
 	 * The method execute calculate the delta time and update the time
-	 * 
+	 * @return void
+	 * @param ss CarWashState
+	 * @param sim Simulator shell
 	 */
 	public void execute(Simulator sim, SimState ss) {
 		CarWashState ss2 = (CarWashState) ss;
