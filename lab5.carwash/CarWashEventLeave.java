@@ -1,83 +1,68 @@
 package lab5.carwash;
 
+import java.util.ArrayList;
+
 import lab5.simulator.SimState;
 import lab5.simulator.Simulator;
 
-public class CarWashEventLeave extends CarWashEvent {
-
+public class CarWashEventArrive extends CarWashEvent {
 	
-	public CarWashEventLeave(double p, int id) {
+	public CarWashEventArrive(double p, int id) {
 		super(p, id);
 		
 	}
 	
 	/**
-	 * I leave-eventets executemetod skall först öka på timevariabeln i statet
-	 * med delta-tiden (detta events prioritet minus statets tid) och sedan idleTime 
-	 * i statet om det finns några lediga biltvättar
-	 * och sedan idleTime i statet om några lediga tvättar finns.
+	 * Timevariabeln i statevariabeln ökas med detta eventets tid minus timevariabeln.
 	 * 
-	 * Efter det söker man igenom långsamma och snabba biltvättar efter id:t som skall tas bort
-	 * och gör det om id:t finns.
+	 * Finns det några lediga biltvättar måste även tidigare nämnd deltatid gångras med antal lediga tvättar,
+	 * och plussas på i idleTime i statevariabeln.
 	 * 
-	 * Om ett id togs bort skall det första id:t i statets kö (om det finns bilar i kön) läggas till
-	 * i en biltvätt, med högre prioritet på en snabb tvätt. Sedan genereras ett till leave-event för det id:t
+	 * Sedan läggs en bil till i den snabba eller långsamma biltvätten.
+	 * Den snabba prioriteras över den långsamma. Finns ingen ledig plats läggs den till i kön.
+	 * Lades en bil till i en tvätt, måste ett leave-event genereras med prioriteten som fås av
+	 * ss.slowWashRand.next() om den ligger i en långsam biltvätt eller ss.fastWashRand.next() om
+	 * den ligger i en snabb biltvätt.
+	 * Är kön i sin tur full ska rejectedCars i statevariabeln ökas.
 	 * 
-	 * Sedan avslutas funktionen.
+	 * Sist skall ett nytt arrive genereras med prioriteten som fås av ss.arrivalRand() och funktionen avslutas.
 	 */
 	public void execute(Simulator sim, SimState ss) {
-		CarWashState ss2 = (CarWashState) ss;
-		double deltaTime = this.priority - ss2.time;
-		/*ss2.time+= deltaTime;
-		ss2.idleTime+= ((ss2.fastWashMax-ss2.fastWash.size())+(ss2.slowWashMax-ss2.slowWash.size()))*(deltaTime); 
-		//ss2.queueTime += (ss2.carQueue.size()) * (this.priority - ss2.time);
-		ss2.queueTime += (ss2.carQueue.size()* deltaTime);*/
-		ss2.updateTime(deltaTime);
+		CarWashState cws = (CarWashState) ss;
+		cws.increaseTotalCars();
+		double deltaTime = this.priority-cws.getTime();
+		/*cws.time += deltaTime;
+		cws.idleTime += ((cws.fastWashMax - cws.fastWash.size()) + (cws.slowWashMax - cws.slowWash.size())) * deltaTime;
+		cws.queueTime += (cws.carQueue.size()) * deltaTime;*/
+		cws.updateTime(deltaTime);
 		
-		ss2.setStateChange();
-		ss2.notifyObservers(this);
+		cws.setStateChange(this);
 		
-		if (ss2.fastWash.contains(id)){
-			ss2.fastWash.remove((Integer)id);
-			if (!ss2.carQueue.isEmpty()){
-				if (ss2.fastWash.size()<ss2.fastWashMax){
-					int bilId=ss2.carQueue.get(0);
-					ss2.fastWash.add(bilId);
-					ss2.carQueue.remove(0);
-					sim.addEvent(new CarWashEventLeave(ss2.time+ss2.fastWashRand.next(),bilId ));
-				}else if(ss2.slowWash.size()<ss2.slowWashMax){
-					int bilId=ss2.carQueue.get(0);
-					ss2.slowWash.add(bilId);
-					ss2.carQueue.remove(0);
-					sim.addEvent(new CarWashEventLeave(ss2.time+ss2.slowWashRand.next(),bilId ));
-				}
-			}
-			
+		ArrayList<Integer> fastWash = cws.getFastWashQueue();
+		ArrayList<Integer> slowWash = cws.getSlowWashQueue();
+		ArrayList<Integer> carQueue = cws.getCarQueue();
+		
+		if(fastWash.size() < cws.getFastWashMax()){
+			fastWash.add(id);
+			sim.addEvent(new CarWashEventLeave(cws.getFastWashTime() + cws.getTime(), id));
 		}
-		else if (ss2.slowWash.contains(id)){
-			ss2.slowWash.remove((Integer)id);
-			if (!ss2.carQueue.isEmpty()){
-				if (ss2.fastWash.size()<ss2.fastWashMax){
-					int bilId = ss2.carQueue.get(0);
-					ss2.fastWash.add(bilId);
-					ss2.carQueue.remove(0);
-					sim.addEvent(new CarWashEventLeave(ss2.time +ss2.fastWashRand.next(), bilId));
-				}else if(ss2.slowWash.size()<ss2.slowWashMax){
-					int bilId = ss2.carQueue.get(0);
-					ss2.slowWash.add(bilId);
-					ss2.carQueue.remove(0);
-					sim.addEvent(new CarWashEventLeave(ss2.time +ss2.slowWashRand.next(), bilId));
-				}
-			}
+		else if(slowWash.size() < cws.getSlowWashMax()){
+			slowWash.add(id);
+			sim.addEvent(new CarWashEventLeave(cws.getSlowWashTime() + cws.getTime(), id));
+		}
+		else if(carQueue.size() < cws.getCarQueueMax()){
+			carQueue.add(id);
+		}
+		else {
+			cws.increaseRejectedCars();
 		}
 		
-				
-	}		
-		
+		sim.addEvent(new CarWashEventArrive(cws.getNextArrival() + cws.getTime(), cws.getNextCarId()));
 
-	public String toString() {
-		return "Leave";
+
 	}
-
-
+	
+	public String toString() {
+		return "Arrive";
+	}
 }
