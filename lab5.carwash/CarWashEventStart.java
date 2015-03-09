@@ -29,7 +29,7 @@ public class CarWashEventStart extends CarWashEvent {
 
 
 	/**
-	 * 
+	 * @return returns the name of the event as a string
 	 * 
 	 */
 	public String toString() {
