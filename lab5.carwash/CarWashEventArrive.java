@@ -16,8 +16,8 @@ public class CarWashEventArrive extends CarWashEvent {
 	  * tvätten över den långsamma. Finns det ledig tvätt tvättas bilen, annars läggs den i kön. Är kön full
 	  * blir bilen rejected och rejectedCarsvariabeln ökas. 
 	  * Till slut generaras ett nytt Arrive-event med nästa prioritet.
-	  * @param Simulator sim Simulator shell.
-	  * @Simstate CarWashState.
+	  * @param sim Simulator shell. 
+	  * @param ss CarWashState.
 	  * @return void
 	  */
 	public void execute(Simulator sim, SimState ss) {
