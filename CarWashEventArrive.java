@@ -29,8 +29,8 @@ public class CarWashEventArrive extends Event {
 		cws.time += deltaTime;
 		cws.idleTime += ((cws.fastWashMax - cws.fastWash.size()) + (cws.slowWashMax - cws.slowWash.size())) * deltaTime;
 		cws.queueTime += (cws.carQueue.size()) * deltaTime;
-		setChanged();
-		notifyObservers();
+		ss.setChanged();
+		ss.notifyObservers();
 		if(cws.fastWash.size() < cws.fastWashMax){
 			cws.fastWash.add(id);
 			sim.addEvent(new CarWashEventLeave(cws.fastWashRand.next() + cws.time, id);
