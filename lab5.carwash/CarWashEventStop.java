@@ -28,10 +28,9 @@ public class CarWashEventStop extends CarWashEvent {
 		ss2.setStopped();
 	}
 	/**
-	 *
+	 * @return returns the name of the event as a string
 	 * 
 	 */
-	
 	public String toString() {
 		return "Stop";
 	}
