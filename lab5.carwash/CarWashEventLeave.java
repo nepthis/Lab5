@@ -57,7 +57,9 @@ public class CarWashEventArrive extends CarWashEvent {
 
 
 	}
-	
+	/**
+	* @return returns the name of the event as a string
+	*/
 	public String toString() {
 		return "Arrive";
 	}
