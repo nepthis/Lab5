@@ -7,7 +7,7 @@ import lab5.simulator.SimView;
 public class CarView extends SimView {
 
 	/** 
-	 * 
+	 * Updates the CarWashState and prints out different information about the carwash (every time it updates) depending on the event.
 	 */
 
     public void update(Observable o, Object e) {
