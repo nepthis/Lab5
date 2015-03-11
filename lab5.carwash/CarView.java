@@ -8,6 +8,8 @@ public class CarView extends SimView {
 
 	/** 
 	 * Updates the CarWashState and prints out different information about the carwash (every time it updates) depending on the event.
+	 * @param o The observer that observers whenever something happens in the carwash.
+	 * @param e An object which in this case is the event.
 	 */
 
     public void update(Observable o, Object e) {
