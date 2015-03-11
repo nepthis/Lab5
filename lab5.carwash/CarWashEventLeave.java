@@ -21,46 +21,60 @@ public class CarWashEventArrive extends CarWashEvent {
 	 *  @param ss CarWashState
 	 *  @return void
 	 */
-	 
-	 //FEL KOD HÄRRRRR
 	public void execute(Simulator sim, SimState ss) {
-		CarWashState cws = (CarWashState) ss;
-		cws.increaseTotalCars();
-		double deltaTime = this.priority-cws.getTime();
-		/*cws.time += deltaTime;
-		cws.idleTime += ((cws.fastWashMax - cws.fastWash.size()) + (cws.slowWashMax - cws.slowWash.size())) * deltaTime;
-		cws.queueTime += (cws.carQueue.size()) * deltaTime;*/
-		cws.updateTime(deltaTime);
+		CarWashState ss2 = (CarWashState) ss;
+		double deltaTime = this.priority - ss2.getTime();
+		/*ss2.time+= deltaTime;
+		ss2.idleTime+= ((ss2.fastWashMax-ss2.fastWash.size())+(ss2.slowWashMax-ss2.slowWash.size()))*(deltaTime); 
+		//ss2.queueTime += (ss2.carQueue.size()) * (this.priority - ss2.time);
+		ss2.queueTime += (ss2.carQueue.size()* deltaTime);*/
+		ss2.updateTime(deltaTime);
 		
-		cws.setStateChange(this);
+		ss2.setStateChange(this);
 		
-		ArrayList<Integer> fastWash = cws.getFastWashQueue();
-		ArrayList<Integer> slowWash = cws.getSlowWashQueue();
-		ArrayList<Integer> carQueue = cws.getCarQueue();
+		ArrayList<Integer> fastWash = ss2.getFastWashQueue();
+		ArrayList<Integer> slowWash = ss2.getSlowWashQueue();
+		ArrayList<Integer> carQueue = ss2.getCarQueue();
 		
-		if(fastWash.size() < cws.getFastWashMax()){
-			fastWash.add(id);
-			sim.addEvent(new CarWashEventLeave(cws.getFastWashTime() + cws.getTime(), id));
+		if (fastWash.contains(id)){
+			fastWash.remove((Integer)id);
+			if (!carQueue.isEmpty()){
+				if (fastWash.size()<ss2.getFastWashMax()){
+					int bilId=carQueue.get(0);
+					fastWash.add(bilId);
+					carQueue.remove(0);
+					sim.addEvent(new CarWashEventLeave(ss2.getTime()+ss2.getFastWashTime(),bilId ));
+				}else if(slowWash.size()<ss2.getSlowWashMax()){
+					int bilId=carQueue.get(0);
+					slowWash.add(bilId);
+					carQueue.remove(0);
+					sim.addEvent(new CarWashEventLeave(ss2.getTime()+ss2.getSlowWashTime(),bilId ));
+				}
+			}
+			
 		}
-		else if(slowWash.size() < cws.getSlowWashMax()){
-			slowWash.add(id);
-			sim.addEvent(new CarWashEventLeave(cws.getSlowWashTime() + cws.getTime(), id));
-		}
-		else if(carQueue.size() < cws.getCarQueueMax()){
-			carQueue.add(id);
-		}
-		else {
-			cws.increaseRejectedCars();
+		else if (slowWash.contains(id)){
+			slowWash.remove((Integer)id);
+			if (!carQueue.isEmpty()){
+				if (fastWash.size()<ss2.getFastWashMax()){
+					int bilId = carQueue.get(0);
+					fastWash.add(bilId);
+					carQueue.remove(0);
+					sim.addEvent(new CarWashEventLeave(ss2.getTime() +ss2.getFastWashTime(), bilId));
+				}else if(slowWash.size()<ss2.getSlowWashMax()){
+					int bilId = carQueue.get(0);
+					slowWash.add(bilId);
+					carQueue.remove(0);
+					sim.addEvent(new CarWashEventLeave(ss2.getTime() +ss2.getSlowWashTime(), bilId));
+				}
+			}
 		}
 		
-		sim.addEvent(new CarWashEventArrive(cws.getNextArrival() + cws.getTime(), cws.getNextCarId()));
+				
+	}		
+		
 
-
-	}
-	/**
-	* @return returns the name of the event as a string
-	*/
 	public String toString() {
-		return "Arrive";
+		return "Leave";
 	}
 }
