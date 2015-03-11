@@ -13,9 +13,9 @@ public class CarWashEventArrive extends CarWashEvent {
 	}
 	
 	/**
-	 * Ökar tids- och idletidvariabeln. Söker igenom den snabba och sedan långsamma tvätten om id:t för bilen finns.
-	 * Om den gör det, ta bort den och lägga till första id:t från bilkön(om det finns) i en en tvätt, med högre priorietet
-	 * på snabb tvätt. Sedan genereras ett nytt leave event för det id:t med nästa prioritet.
+	 * Increases time- and idleTime variable. Searches for car id in the fast wash, then the slow one. If the car id 
+	 * is a wash, it removes it and then it add a new car id from the car queue (the first one in queue) to a wash.
+	 * Fast washes are prioritized over slow washes. After that a new leave event for that car id is generated with the next priority.
 	 * 
 	 *  @param sim Simulator shell.
 	 *  @param ss CarWashState
