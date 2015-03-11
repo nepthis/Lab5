@@ -13,4 +13,11 @@ abstract public class CarWashEvent extends Event {
 	public int getId() {
 		return id;
 	}
+	
+	/** 
+	 * The toString method is supposed to return the name of the event for
+	 * the view to use.
+	 * @return String
+	 * */
+	public abstract String toString();
 }
